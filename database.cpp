@@ -31,8 +31,8 @@ QVariant database::get_param(QAnyStringView name) {
 }
 
 void database::_initDb() {
-  exec("PRAGMA synchronous = OFF");
-  exec("PRAGMA journal_mode = OFF");
+  // exec("PRAGMA synchronous = OFF");
+  // exec("PRAGMA journal_mode = OFF");
 
   exec("CREATE TABLE IF NOT EXISTS users "
        "(id INTEGER PRIMARY KEY ASC NOT NULL UNIQUE,"
