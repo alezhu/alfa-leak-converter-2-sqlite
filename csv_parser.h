@@ -37,9 +37,9 @@ private:
     QStringList m_current;
 
     void _parse_row();
-    char16_t _pop();
-    char16_t _peek();
-    void _skip(int count = 1);
-    QString _token();
+    inline char16_t _pop();
+    inline char16_t _peek();
+    inline void _skip(int count = 1);
+    QString _token(bool& rowEnd);
     void _skipBOM();
 };
