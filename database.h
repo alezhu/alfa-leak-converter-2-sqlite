@@ -2,6 +2,7 @@
 #include "loger.h"
 #include "state.h"
 #include <QSqlDatabase>
+#include <QSqlError>
 #include <QSqlQuery>
 #include <QString>
 
@@ -26,6 +27,12 @@ public:
 
     void createIndexes();
     void reload(context& ctx, state_t& state);
+
+    template<class T>
+    void checkResult(bool result,const T& lastErrorProvider) {
+        if(result) return;
+        _throwLastError(lastErrorProvider.lastError());
+    }
 private:
     QSqlDatabase m_db;
     loger& m_log;
@@ -33,9 +40,5 @@ private:
 
     void _throwLastError(const QSqlError &&lastError);
 
-    template<class T>
-    void _checkResult(bool result,const T& lastErrorProvider) {
-        if(result) return;
-        _throwLastError(lastErrorProvider.lastError());
-    }
+
 };

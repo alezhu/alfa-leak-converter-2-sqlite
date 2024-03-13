@@ -74,13 +74,13 @@ void database::exec(const QString &sql, QAnyStringView log) {
 void database::exec(QSqlQuery &query, QAnyStringView log) {
   if (log.size() > 0)
     m_log << log;
-  _checkResult(query.exec(), query);
+  checkResult(query.exec(), query);
 }
 
 void database::execBatch(QSqlQuery &query, QAnyStringView log) {
   if (log.size() > 0)
     m_log << log;
-  _checkResult(query.execBatch(), query);
+  checkResult(query.execBatch(), query);
 }
 
 void database::_throwLastError(const QSqlError &&lastError) {
@@ -91,11 +91,11 @@ void database::_throwLastError(const QSqlError &&lastError) {
 
 QSqlDatabase database::db() const { return m_db; }
 
-void database::startTransaction() { _checkResult(m_db.transaction(), m_db); }
+void database::startTransaction() { checkResult(m_db.transaction(), m_db); }
 
-void database::commit() { _checkResult(m_db.commit(), m_db); }
+void database::commit() { checkResult(m_db.commit(), m_db); }
 
-void database::rollack() { _checkResult(m_db.rollback(), m_db); }
+void database::rollack() { checkResult(m_db.rollback(), m_db); }
 
 void database::createIndexes() {
   exec("CREATE INDEX IF NOT EXISTS idx_users_name ON users (name)",
