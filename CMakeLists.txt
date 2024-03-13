@@ -33,6 +33,7 @@ add_executable(qt_alfa_leak
   global.h
   common.cpp
   model.h model.cpp
+  string_buffer.h string_buffer.cpp
 )
 target_link_libraries(qt_alfa_leak Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Sql Qt${QT_VERSION_MAJOR}::Widgets)
 
