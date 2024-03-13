@@ -9,6 +9,6 @@ typedef quint32 date_t;
 
 constexpr auto DB_PARAM_PROCESSED_POSITION = "processed_position";
 constexpr auto DB_TYPE_NAME = "QSQLITE";
-constexpr auto DB_SAVE_BY_SIZE = 10;
+constexpr auto DB_SAVE_BY_SIZE = 1000;
 constexpr auto MEM_MAX_USERS_SIZE = 100000;
 constexpr auto STRING_BUFFER_SIZE = 0x7FFF;
