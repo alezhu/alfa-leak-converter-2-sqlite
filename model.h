@@ -5,6 +5,7 @@
 #include "state.h"
 
 #include <QObject>
+#include <QThreadPool>
 
 class model : public QObject
 {
@@ -20,6 +21,7 @@ private:
     database m_db;
     context m_ctx{};
     state_t m_state{.pause = false, .stop = false, .done = false};
+    QThreadPool pool{};
 public slots:
     void start();
     void stop();
