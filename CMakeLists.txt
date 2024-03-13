@@ -13,28 +13,41 @@ find_package(QT NAMES Qt6 REQUIRED COMPONENTS Core Sql Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Sql Widgets)
 
 add_executable(qt_alfa_leak
-  main.cpp
-  user.h users_t.h users_t.cpp
-  contact.h contacts_t.h contacts_t.cpp
-  card.h cards_t.h cards_t.cpp
-  common.h
-  csv_parser.h csv_parser.cpp
-  context.h context.cpp
-  database.h database.cpp
-  loger.h loger.cpp
-  state.h
-  runnable_base.h runnable_base.cpp
-  runnable_parser.h runnable_parser.cpp
-  runnable_db.h runnable_db.cpp
+  src/main.cpp
+  src/user.h
+  src/users_t.h
+  src/users_t.cpp
+  src/contact.h
+  src/contacts_t.h
+  src/contacts_t.cpp
+  src/card.h
+  src/cards_t.h
+  src/cards_t.cpp
+  src/common.h
+  src/csv_parser.h
+  src/csv_parser.cpp
+  src/context.h
+  src/context.cpp
+  src/database.h
+  src/database.cpp
+  src/loger.h
+  src/loger.cpp
+  src/state.h
+  src/runnable_base.h src/runnable_base.cpp
+  src/runnable_parser.h src/runnable_parser.cpp
+  src/runnable_db.h src/runnable_db.cpp
 
-  MainWindow.cpp
-  MainWindow.h
-  MainWindow.ui
-  global.h
-  common.cpp
-  model.h model.cpp
-  string_buffer.h string_buffer.cpp
-  strings.h strings.cpp
+  src/MainWindow.cpp
+  src/MainWindow.h
+  src/MainWindow.ui
+  src/global.h
+  src/common.cpp
+  src/model.h
+  src/model.cpp
+  src/string_buffer.h
+  src/string_buffer.cpp
+  src/strings.h
+  src/strings.cpp
 )
 target_link_libraries(qt_alfa_leak Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Sql Qt${QT_VERSION_MAJOR}::Widgets)
 
