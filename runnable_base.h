@@ -16,4 +16,6 @@ protected:
     context *m_ctx;
     virtual void _step() = 0;
     loger &m_log;
+
+    void _sleep();
 };

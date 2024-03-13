@@ -26,10 +26,10 @@ void runnable_db::_insertChunks(strings *strings) const {
 
 void runnable_db::_step() {
   auto container = m_ctx->container();
-    QThread::yieldCurrentThread();
   if (!m_state->done && container->users.count() < DB_SAVE_BY_SIZE &&
       container->cards.count() < DB_SAVE_BY_SIZE &&
       container->contacts.count() < DB_SAVE_BY_SIZE) {
+      _sleep();
     return;
   }
 

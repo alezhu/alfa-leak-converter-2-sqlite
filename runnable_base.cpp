@@ -8,8 +8,13 @@ void runnable_base::run() {
   while (!m_state->stop) {
     _step();
     while (m_state->pause && !m_state->stop) {
-       QThread::usleep(1);
-      QThread::yieldCurrentThread();
+        _sleep();
     }
   }
+}
+
+void runnable_base::_sleep()
+{
+    QThread::usleep(1);
+    QThread::yieldCurrentThread();
 }
