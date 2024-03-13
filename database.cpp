@@ -98,19 +98,13 @@ void database::commit() { _checkResult(m_db.commit(), m_db); }
 void database::rollack() { _checkResult(m_db.rollback(), m_db); }
 
 void database::createIndexes() {
-  exec("CREATE INDEX idx_users_name ON users (name)",
+  exec("CREATE INDEX IF NOT EXISTS idx_users_name ON users (name)",
        "Create index for users name...");
 
-  // exec("CREATE INDEX idx_contacts_user_id ON contacts (user_id)",
-  //      "Create index for user_id in contacts...");
-
-  exec("CREATE INDEX idx_contacts_value ON contacts (value)",
+  exec("CREATE INDEX IF NOT EXISTS idx_contacts_value ON contacts (value)",
        "Create index for value in contacts...");
 
-  // exec("CREATE INDEX idx_cards_user_id ON cards (user_id)",
-  //      "Create index for user_id in cards...");
-
-  exec("CREATE INDEX idx_cards_value ON cards (value)",
+  exec("CREATE INDEX IF NOT EXISTS idx_cards_value ON cards (value)",
        "Create index for value in cards...");
 }
 
