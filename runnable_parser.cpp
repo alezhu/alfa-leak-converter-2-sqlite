@@ -29,11 +29,6 @@ void runnable_parser::_step() {
   if (user_exists == loaded.end()) {
     auto name = m_parser->value(csv_parser::fields::name);
     auto birthDate = toDate(m_parser->value(csv_parser::fields::birth_date));
-    m_ctx->container()->users.emplaceBack(user_t{
-        .id = user_id,
-        .name = name,
-        .birthDate = birthDate,
-    });
 
 #ifdef CHECK_DOUBLES
     loaded.insert(user_id, QDateTime::currentMSecsSinceEpoch());
@@ -63,11 +58,6 @@ void runnable_parser::_step() {
 #else
   {
 #endif
-    m_ctx->container()->contacts.emplaceBack(contact_t{
-        .user_id = user_id,
-        .type = determineContactType(contact),
-        .value = contact,
-    });
   }
 
   auto card = m_parser->value(csv_parser::fields::card).toULongLong();
@@ -83,11 +73,6 @@ void runnable_parser::_step() {
 #else
   {
 #endif
-    m_ctx->container()->cards.add(card_t{
-        .user_id = user_id,
-        .value = card,
-        .expireDate = toDate(m_parser->value(csv_parser::fields::expiredate))});
-  }
 
   m_fnSetPos(m_parser->position());
 }
@@ -118,5 +103,20 @@ void runnable_parser::_clear_old() {
         [&](auto &it) { return loaded[it.key()] <= mid; });
   }
 
+        m_ctx->container()->users.add(user_t{
+            .id = user_id,
+            .name = name,
+            .birthDate = birthDate,
+        });
+            m_ctx->container()->contacts.add(contact_t{
+                .user_id = user_id,
+                .type = determineContactType(contact),
+                .value = contact,
+            });
+            m_ctx->container()->cards.add(card_t{
+                .user_id = user_id,
+                .value = card,
+                .expireDate = toDate(m_parser->value(csv_parser::fields::expiredate))});
+        }
 }
 #endif
