@@ -15,22 +15,25 @@ quint64 model::processedUsers() { return m_ctx.loaded().size(); }
 
 quint64 model::position() { return m_ctx.container()->processed_position; }
 
-void model::start() {
-
-  if (m_bDbExists) {
-    auto processed_pos = m_db.get_param(DB_PARAM_PROCESSED_POSITION);
-    if (processed_pos.isValid()) {
-      auto pos = processed_pos.toULongLong();
-      m_ctx.container()->processed_position = pos;
-      m_parser.setPosition(pos);
+void model::start()
+{
+    bool skipHeader = true;
+    if (m_bDbExists) {
+        auto processed_pos = m_db.get_param(DB_PARAM_PROCESSED_POSITION);
+        if (processed_pos.isValid()) {
+            auto pos = processed_pos.toULongLong();
+            m_ctx.container()->processed_position = pos;
+            m_parser.setPosition(pos);
+            skipHeader = false;
+        }
+        m_db.reload(m_ctx, m_state);
     }
-    m_db.reload(m_ctx, m_state);
-  }
   auto pool = QThreadPool::globalInstance();
-  pool->start(new runnable_parser(&m_state, &m_ctx, &m_parser,
-                                  [&](quint64 pos) { setPosition(pos); }));
 
   pool->start(new runnable_db(&m_state, &m_ctx, &m_db));
+    pool.start(new runnable_parser(&m_state, &m_ctx, &m_parser, skipHeader, [&](quint64 pos) {
+        setPosition(pos);
+    }));
 }
 
 void model::stop() {
