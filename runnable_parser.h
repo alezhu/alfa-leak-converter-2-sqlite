@@ -7,7 +7,7 @@
 class runnable_parser : public runnable_base
 {
 public:
-    runnable_parser(state_t* state, context* ctx, csv_parser* parser,
+    runnable_parser(state_t* state, context* ctx, csv_parser* parser,bool skipHeader,
                     std::function<void(quint64)> fnSetPos);
 protected:
     void _step() override;

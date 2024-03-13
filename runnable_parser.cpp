@@ -2,11 +2,18 @@
 #include "common.h"
 #include <QDateTime>
 
-runnable_parser::runnable_parser(state_t *state, context *ctx,
-                                 csv_parser *parser,
-                                 std::function<void(quint64)> fnSetPos)
-    : runnable_base{state, ctx}, m_parser{parser}, m_fnSetPos{fnSetPos} {
-  m_log << "Start parsing file";
+runnable_parser::runnable_parser(
+    state_t* state,
+    context* ctx,
+    csv_parser* parser,
+    bool skipHeader,
+    std::function<void(quint64)> fnSetPos)
+    : runnable_base{state, ctx}
+    , m_parser{parser}
+    , m_header{skipHeader}
+    , m_fnSetPos{fnSetPos}
+{
+    m_log << "Start parsing file";
 }
 
 void runnable_parser::_step() {
