@@ -1,5 +1,4 @@
 #include "runnable_db.h"
-#include "common.h"
 
 #include <QThread>
 #include <QThreadPool>
@@ -72,7 +71,11 @@ void runnable_db::_step() {
   m_db->commit();
   m_log << "DB Updated";
 
-  if (!m_state->stop) {
-      QThreadPool::globalInstance()->start([=]() { delete snapshot; });
+  if (m_state->done) {
+      m_finished = true;
+  }
+
+  if (!(m_finished || m_state->stop)) {
+    QThreadPool::globalInstance()->start([=]() { delete snapshot; });
   }
 }
