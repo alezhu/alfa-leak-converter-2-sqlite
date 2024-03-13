@@ -1,49 +1,37 @@
 #include "cards_t.h"
+#include "common.h"
 
-cards_t::cards_t(const qsizetype chunk_size)
-    : m_size{0}
+cards_t::cards_t(const size_t chunk_size)
+    : m_count{0}
     , m_chunk_size{chunk_size}
-{}
-
-cards_t::~cards_t()
+    , m_strings{u"INSERT OR IGNORE INTO cards (user_id,value,expire_date) VALUES ", m_chunk_size}
 {
-    clear();
 }
 
-qsizetype cards_t::size() const { return m_size; }
+cards_t::~cards_t() { clear(); }
 
-qsizetype cards_t::add(const card_t &&value) {
-  auto chunks_count = m_chunks.size();
-  if (chunks_count == 0) {
-    m_chunks.append(new card_chunk_t{m_chunk_size});
-    chunks_count++;
-  }
-  auto chunk = m_chunks[chunks_count - 1];
-  if (chunk->size() == chunk->capacity()) {
-    m_chunks.append(new card_chunk_t{m_chunk_size});
-    chunks_count++;
-    chunk = m_chunks[chunks_count - 1];
-  }
-  chunk->add(std::move(value));
-  return m_size++;
+qsizetype cards_t::count() const { return m_count; }
+
+void cards_t::add(const card_t &&value) {
+  //    "INSERT OR IGNORE INTO cards (user_id,value,expire_date) VALUES "
+  //    "(?,?,?)"
+  //    ",(?,?,?)"
+  //    ",(?,?,?)"
+
+  QString values =
+      QString("(%1,%2,'%3'),")
+          .arg(QString::number(value.user_id), QString::number(value.value),
+               toDateEx(value.expireDate));
+  m_strings.append(values);
+  m_count++;
 }
 
-qsizetype cards_t::emplaceBack(const card_t &&value) {
-  return add(std::move(value));
-}
-
-card_t &cards_t::at(qsizetype index) const {
-  // Not safe
-  auto chunk_id = index / m_chunk_size;
-  auto in_chunk_id = index % m_chunk_size;
-  auto chunk = m_chunks.at(chunk_id);
-  return chunk->at(in_chunk_id);
+strings* cards_t::getStrings()
+{
+    return &m_strings;
 }
 
 void cards_t::clear() {
-  for (auto it : m_chunks) {
-    delete it;
-  }
-  m_chunks.clear();
-  m_size = 0;
+  m_strings.clear();
+    m_count = 0;
 }
